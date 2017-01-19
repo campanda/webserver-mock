@@ -1,0 +1,19 @@
+---
+engines:
+  rubocop:
+    enabled: true
+
+  reek:
+    enabled: true
+
+  markdownlint:
+    enabled: true
+
+  shellcheck:
+    enabled: true
+
+ratings:
+  paths:
+    - '**.rb'
+    - '**.md'
+    - '**.sh'

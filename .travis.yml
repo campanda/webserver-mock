@@ -1,0 +1,17 @@
+---
+language: ruby
+
+services:
+  - docker
+
+before_script:
+  - cd tests
+  - docker-compose build
+  - docker-compose up -d
+
+script:
+  - docker-compose run tests *.sh
+
+after_script:
+  - docker-compose kill
+  - docker-compose down --remove-orphans

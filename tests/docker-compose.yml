@@ -1,0 +1,28 @@
+version: '2'
+
+services:
+
+  target-default-config:
+    build: ..
+
+  target-with-custom-response:
+    build: ..
+    environment:
+      - 'status=201'
+      - 'header_Content-Type=text/html'
+      - 'header_X-Page-Type=mypage'
+      - "body=<h1>my page</h1>"
+
+  target-on-https:
+    build: ..
+    environment:
+      - 'ssl=true'
+
+  tests:
+    build: .
+    volumes:
+      - ".:/tests"
+    depends_on:
+      - target-default-config
+      - target-with-custom-response
+      - target-on-https
