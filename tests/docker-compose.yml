@@ -18,6 +18,11 @@ services:
     environment:
       - 'ssl=true'
 
+  target-with-custom-http-verbs:
+    build: ..
+    environment:
+      - 'allow_http_verbs=FOO,BAR'
+
   tests:
     build: .
     volumes:

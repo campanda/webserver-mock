@@ -91,6 +91,25 @@ The webserver comes with some predefined response status codes for certain paths
 | /service-unavailable    | 503           |
 | /gateway-timeout        | 504           |
 
+### Custom HTTP verbs
+
+    $ docker run -d -p 80:80 -e 'allow_http_verbs=FOO,BAR' campanda/webserver-mock
+    // or you can with -it instead to check the logs
+
+By default only `GET` and `POST` are allowed.
+
+    $ curl -i http://localhost/ -X FOO
+    HTTP/1.1 200 OK
+    ...
+
+    $ curl -i http://localhost/ -X BAR
+    HTTP/1.1 200 OK
+    ...
+
+    $ curl -i http://localhost/ -X BACON
+    HTTP/1.1 405 Method Not Allowed
+    ...
+
 ## License
 
 webserver-mock is released under the [MIT License][0].
