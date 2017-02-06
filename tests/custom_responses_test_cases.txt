@@ -1,0 +1,2 @@
+/whatever-request	201	Content-Type: text/html	X-Page-Type: mypage	<h1>my page</h1>
+/all/defaults	200	Content-Length: 101	Connection: Keep-Alive	GET /all/defaults HTTP/1.1

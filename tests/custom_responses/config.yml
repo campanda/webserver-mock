@@ -1,0 +1,9 @@
+---
+- path: '/whatever-request'
+  status: 201
+  headers:
+    'Content-Type': 'text/html'
+    'X-Page-Type': 'mypage'
+  body: '/custom_responses/mypage.html'
+
+- path: '/all/defaults'

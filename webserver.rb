@@ -1,6 +1,5 @@
-def add_headers(res)
-  headers = ENV.select { |key, _val| key.match(/^header_/) }
-  headers.map { |key, val| res[key.sub(/^header_/, '')] = val }
+def add_headers(res, headers)
+  headers.each_pair { |key, val| res[key] = val }
   res
 end
 
@@ -39,10 +38,25 @@ predefined_responses.each_pair do |status, path|
   end
 end
 
-server.mount_proc '/' do |req, res|
-  res = add_headers(res)
-  res.status = ENV['status'] || 200
-  res.body = ENV['body'] || echo(req)
+if ENV['custom_responses_config']
+  require 'yaml'
+  custom_responses_config = YAML::load_file(ENV['custom_responses_config'])
+  custom_responses_config.each do |custom_response|
+
+    server.mount_proc custom_response['path'] do |req, res|
+      res = add_headers(res, custom_response['headers']) if custom_response['headers']
+      res.status = custom_response['status'] || 200
+      res.body = custom_response['body'] ? File.read(custom_response['body']) : echo(req)
+    end
+
+  end
+else
+
+  server.mount_proc '/' do |req, res|
+    res.status = 200
+    res.body = echo(req)
+  end
+
 end
 
 server.start
