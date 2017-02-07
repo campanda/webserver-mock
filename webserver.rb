@@ -42,7 +42,9 @@ end
 server.mount_proc '/' do |req, res|
   res = add_headers(res)
   res.status = ENV['status'] || 200
-  res.body = ENV['body'] || echo(req)
+  res.body = echo(req)
+  res.body += "\n#{ENV['body']}"
+  res
 end
 
 server.start

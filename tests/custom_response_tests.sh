@@ -13,5 +13,6 @@ function test_replies_with_injected_http_headers {
 
 function test_replies_with_injected_body {
   actual=$(curl -si http://target-with-custom-response/whatever-request)
-  echo "$actual" | grep -q '<h1>my page</h1>'
+  echo "$actual" | grep -q '<h1>my page</h1>' && \
+    echo "$actual" | grep -q 'GET /whatever-request'
 }
