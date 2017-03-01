@@ -12,6 +12,19 @@ end
 
 require 'webrick'
 
+if ENV['allow_http_verbs']
+  module WEBrick
+    module HTTPServlet
+      # Allowing server to respond to requests using custom HTTP verbs
+      class ProcHandler
+        ENV['allow_http_verbs'].split(',').each do |verb|
+          alias_method "do_#{verb}", 'do_GET'
+        end
+      end
+    end
+  end
+end
+
 if ENV['ssl']
   require 'webrick/https'
   opts = { Port: 443, SSLEnable: true, SSLCertName: [%w(CN localhost)] }
