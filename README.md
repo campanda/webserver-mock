@@ -27,30 +27,67 @@ By default, it acts like an __echo server__:
     User-Agent: curl/7.49.1
     Accept: */*
 
-### Custom response
+### Custom responses
+
+You can specify one or more paths that will provide a custom response,
+by defining them on a `YAML` file:
+
+`/my-host-path/config.yml`:
+
+    ---
+    - path: '/some/custom/page'
+      status: 200
+      headers:
+        'Content-Type': 'text/html'
+        'X-Page-Type': 'mypage'
+      body: '/my-mounted-path/mypage.html'
+
+    - path: '/users/123.json'
+      status: 200
+      headers:
+        'Content-Type': 'application/json'
+      body: '/my-mounted-path/user-123.json'
+
+
+And files with the body to be served for each custom response:
+
+`/my-host-path/mypage.html`:
+
+    <html>
+    <body>
+        <h1>My Page</h1>
+    </body>
+    </html>
+
+`/my-host-path/user-123.json`:
+
+    {
+        "id": "123",
+        "name": "a user"
+    }
+
+You just need to mount a volume with the custom response files and
+inform where is the `custom_responses_config` YAML file:
 
     $ docker run -d -p 80:80 \
-      -e 'status=201' \
-      -e 'header_Content-Type=text/html' \
-      -e 'header_X-Page-Type=mypage' \
-      -e 'body=<h1>my page</h1>' \
+      -v '/my-host-path:/my-mounted-path' \
+      -e 'custom_responses_config=/my-mounted-path/config.yml \
       campanda/webserver-mock
-
-__Note:__ All environment variables are optional. If any of them is omitted,
-the corresponding default value is assumed.
 
 The response of this server will be:
 
-    $ curl -i http://localhost/
-    HTTP/1.1 201 Created
-    Content-Type: text/html
-    X-Page-Type: mypage
+    $ curl -i http://localhost/users/123.json
+    HTTP/1.1 200 OK
+    Content-Type: application/json
     Server: WEBrick/1.3.1 (Ruby/2.4.0/2016-12-24)
     Date: Wed, 18 Jan 2017 21:53:32 GMT
-    Content-Length: 16
+    Content-Length: 31
     Connection: Keep-Alive
 
-    <h1>my page</h1>
+    {"id": "123", "name": "a user"}
+
+__Note:__ All environment variables are optional. If any of them is omitted,
+the corresponding default value is assumed.
 
 ### HTTPS
 

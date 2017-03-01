@@ -5,13 +5,12 @@ services:
   target-default-config:
     build: ..
 
-  target-with-custom-response:
+  target-with-custom-responses:
     build: ..
     environment:
-      - 'status=201'
-      - 'header_Content-Type=text/html'
-      - 'header_X-Page-Type=mypage'
-      - "body=<h1>my page</h1>"
+      - 'custom_responses_config=/custom_responses/config.yml'
+    volumes:
+      - "./custom_responses:/custom_responses"
 
   target-on-https:
     build: ..
@@ -24,5 +23,5 @@ services:
       - ".:/tests"
     depends_on:
       - target-default-config
-      - target-with-custom-response
+      - target-with-custom-responses
       - target-on-https
