@@ -71,7 +71,7 @@ inform where is the `custom_responses_config` YAML file:
 
     $ docker run -d -p 80:80 \
       -v '/my-host-path:/my-mounted-path' \
-      -e 'custom_responses_config=/my-mounted-path/config.yml \
+      -e 'custom_responses_config=/my-mounted-path/config.yml' \
       campanda/webserver-mock
 
 The response of this server will be:
@@ -130,10 +130,11 @@ The webserver comes with some predefined response status codes for certain paths
 
 ### Custom HTTP verbs
 
+By default only `GET` and `POST` are allowed, but you can set additional HTTP verbs,
+with the `allow_http_verbs` environment variable:
+
     $ docker run -d -p 80:80 -e 'allow_http_verbs=FOO,BAR' campanda/webserver-mock
     // or you can with -it instead to check the logs
-
-By default only `GET` and `POST` are allowed.
 
     $ curl -i http://localhost/ -X FOO
     HTTP/1.1 200 OK
