@@ -14,3 +14,8 @@ function _test_custom_responses {
   echo "$actual" | grep -q "$expected_header2" &&\
   echo "$actual" | grep -q "$expected_body"
 }
+
+function test_fallsback_to_echo_server_if_no_custom_response_defined {
+  actual=$(curl -si http://target-with-custom-responses/not/defined/on/config)
+  echo "$actual" | grep -q 'GET /not/defined/on/config'
+}

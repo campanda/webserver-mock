@@ -63,13 +63,11 @@ if ENV['custom_responses_config']
     end
 
   end
-else
+end
 
-  server.mount_proc '/' do |req, res|
-    res.status = 200
-    res.body = echo(req)
-  end
-
+server.mount_proc '/' do |req, res|
+  res.status = 200
+  res.body = echo(req)
 end
 
 server.start
