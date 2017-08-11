@@ -7,3 +7,8 @@
   body: '/custom_responses/mypage.html'
 
 - path: '/all/defaults'
+
+- path: '/'
+  headers:
+    'Content-Type': 'application/json'
+    'X-Page-Type': 'custom'

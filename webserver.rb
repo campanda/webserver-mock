@@ -63,11 +63,14 @@ if ENV['custom_responses_config']
     end
 
   end
-end
+else
 
-server.mount_proc '/' do |req, res|
-  res.status = 200
-  res.body = echo(req)
+  # fallback to echo server
+  server.mount_proc '/' do |req, res|
+    res.status = 200
+    res.body = echo(req)
+  end
+
 end
 
 server.start
